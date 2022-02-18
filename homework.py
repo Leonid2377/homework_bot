@@ -30,7 +30,7 @@ logging.basicConfig(
 
 
 def send_message(bot, message):
-    """Функция отправки сообщения"""
+    """Функция отправки сообщения."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
     except Exception as error:
@@ -38,7 +38,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(current_timestamp):
-    """Проверяет ответ API Яндекс Практикум"""
+    """Проверяет ответ API Яндекс Практикум."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     try:
@@ -51,7 +51,7 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    """Проверка ответа от сервера Яндекс Практикума"""
+    """Проверка ответа от сервера Яндекс Практикума."""
     if response is None:
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
@@ -67,7 +67,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Проверка статуса работ на сервере"""
+    """Проверка статуса работ на сервере."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
     if homework_status not in HOMEWORK_STATUSES.keys():
@@ -78,7 +78,7 @@ def parse_status(homework):
 
 
 def check_tokens():
-    """Проверка токенов на локальном сервере"""
+    """Проверка токенов на локальном сервере."""
     check = 1
     tokens = [
         PRACTICUM_TOKEN,
