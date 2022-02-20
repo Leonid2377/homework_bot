@@ -58,9 +58,9 @@ def check_response(response):
     if response.get('homeworks') is None:
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
-    if type(response) != dict:
-        logger.error('Ответ сервера не список')
-        raise TypeError('Неверный тип данных')
+    # if type(response) != dict:
+    #     logger.error('Ответ сервера не список')
+    #     raise TypeError('Неверный тип данных')
     if not isinstance(response['homeworks'], list):
         logger.error('Неверный тип данных')
         raise TypeError('под ключом `homeworks`'
