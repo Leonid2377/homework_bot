@@ -71,7 +71,6 @@ def check_response(response):
         return response['homeworks']
 
 
-
 def parse_status(homework):
     """Проверка статуса работ на сервере."""
     homework_name = homework.get('homework_name')
