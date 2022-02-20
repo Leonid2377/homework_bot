@@ -43,6 +43,9 @@ def get_api_answer(current_timestamp):
     params = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
+        if response.status_code != 200:
+            logger.error('Статус код != 200')
+            raise ConnectionError('Ошибка статуса ответа от API')
     except Exception as error:
         logger.error(f'Ошибка при запросе к основному API: {error}')
         raise ConnectionError('Ошибка подключения')
@@ -52,6 +55,7 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка ответа от сервера Яндекс Практикума."""
+    homeworks = response.get('homeworks')
     if response is None:
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
@@ -63,7 +67,9 @@ def check_response(response):
     except Exception as error:
         logger.error(f'Работ по ключу homeworks не найдено {error}')
         raise KeyError('Работы не найдены')
-    return response['homeworks']
+    if response['homeworks'] != []:
+        return response['homeworks']
+
 
 
 def parse_status(homework):
