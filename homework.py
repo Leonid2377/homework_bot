@@ -55,7 +55,6 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка ответа от сервера Яндекс Практикума."""
-    homeworks = response.get('homeworks')
     if response is None:
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
