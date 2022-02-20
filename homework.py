@@ -58,7 +58,7 @@ def check_response(response):
     if response.get('homeworks') is None:
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
-    if type(response) != dict:
+    if type(response) != list:
         logger.error('Ответ сервера не список')
         raise TypeError('Неверный тип данных')
     try:
@@ -66,9 +66,8 @@ def check_response(response):
     except Exception as error:
         logger.error(f'Работ по ключу homeworks не найдено {error}')
         raise KeyError('Работы не найдены')
-    if response['homeworks'] == []:
-        pass
-    return response['homeworks']
+    if response['homeworks'] != []:
+        return response['homeworks']
 
 
 def parse_status(homework):
