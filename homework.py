@@ -119,6 +119,7 @@ def parse_status(homework):
 #     ])
 #     return tokens
 def check_tokens():
+    """Проверка токенов на локальном сервере."""
     check = 1
     tokens = [
         PRACTICUM_TOKEN,
