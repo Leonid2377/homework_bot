@@ -19,11 +19,17 @@ LIST_ERRORS = []
 BOT = telegram.Bot(token=TELEGRAM_TOKEN)
 logger = logging.getLogger(__name__)
 
-HOMEWORK_VERDICTES = {
+HOMEWORK_STATUSES = {
     'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
     'reviewing': 'Работа взята на проверку ревьюером.',
     'rejected': 'Работа проверена: у ревьюера есть замечания.'
 }
+
+# HOMEWORK_VERDICTES = {
+#     'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
+#     'reviewing': 'Работа взята на проверку ревьюером.',
+#     'rejected': 'Работа проверена: у ревьюера есть замечания.'
+# }
 logging.basicConfig(
     level=logging.DEBUG,
     filename='program.log',
@@ -87,6 +93,27 @@ def check_response(response):
     if response['homeworks'] != []:
         return response['homeworks']
 
+
+# def parse_status(homework):
+#     """Проверка статуса работ на сервере."""
+#     homework_name = homework.get('homework_name')
+#     homework_status = homework.get('status')
+#     if homework_name is None or homework_status is None:
+#         err_message = 'Ответ сервера не соответствует ожиданиям'
+#         logger.error(err_message)
+#         if err_message not in LIST_ERRORS:
+#             send_message(BOT, err_message)
+#             LIST_ERRORS.append(err_message)
+#         raise ValueError(err_message)
+#     if homework_status not in HOMEWORK_VERDICTES.keys():
+#         err_message = 'Неверное значение статуса работы'
+#         logger.error(err_message)
+#         if err_message not in LIST_ERRORS:
+#             send_message(BOT, err_message)
+#             LIST_ERRORS.append(err_message)
+#         raise KeyError(err_message)
+#     verdict = HOMEWORK_VERDICTES[homework_status]
+#     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 def parse_status(homework):
     """Проверка статуса работ на сервере."""
