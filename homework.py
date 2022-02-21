@@ -70,9 +70,6 @@ def check_response(response):
         raise ValueError('Ошибка ответа сервера')
     try:
         response['homeworks']
-    # except Exception as error:
-    #     logger.error(f'Работ по ключу homeworks не найдено {error}')
-    #     raise KeyError('Работы не найдены')
     except Exception as error:
         err_message = f'Работ по ключу homeworks не найдено {error}'
         logger.error(err_message)
@@ -110,76 +107,43 @@ def parse_status(homework):
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
-# def check_tokens():
-#     """Проверка токенов на локальном сервере."""
-#     tokens = all([
-#         PRACTICUM_TOKEN,
-#         TELEGRAM_TOKEN,
-#         TELEGRAM_CHAT_ID
-#     ])
-#     return tokens
 def check_tokens():
     """Проверка токенов на локальном сервере."""
-    check = 1
-    tokens = [
+    tokens = all([
         PRACTICUM_TOKEN,
         TELEGRAM_TOKEN,
         TELEGRAM_CHAT_ID
-    ]
-    for i in tokens:
-        if i is None:
-            check = 0
-    return check
+    ])
+    return tokens
 
 
 def main():
     """Основная функция запуска."""
-    if check_tokens() != 1:
-        logger.error('Проверка токенов не прошла')
-        raise KeyError('Проверка токенов не прошла')
-
-    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    if not check_tokens():
+        err_message = 'Проверка токенов не прошла'
+        logger.error(err_message)
+        if err_message not in LIST_ERRORS:
+            send_message(BOT, err_message)
+            LIST_ERRORS.append(err_message)
+        raise KeyError(err_message)
     current_timestamp = int(time.time())
     while True:
         try:
             response = get_api_answer(current_timestamp)
             homework = check_response(response)
             if homework:
-                send_message(bot, parse_status(homework[0]))
-            current_timestamp = response.get('current_date', current_timestamp)
+                send_message(BOT, parse_status(homework[0]))
+            current_timestamp = response.get('current_date',
+            current_timestamp)
             time.sleep(RETRY_TIME)
 
         except Exception as error:
-            message = f'Сбой в работе программы: {error}'
-            logger.error(message)
+            err_message = f'Сбой в работе программы: {error}'
+            logger.error(err_message)
+            if err_message not in LIST_ERRORS:
+                send_message(BOT, err_message)
+                LIST_ERRORS.append(err_message)
             time.sleep(RETRY_TIME)
-# def main():
-#     """Основная функция запуска."""
-#     if not check_tokens():
-#         err_message = 'Проверка токенов не прошла'
-#         logger.error(err_message)
-#         if err_message not in LIST_ERRORS:
-#             send_message(BOT, err_message)
-#             LIST_ERRORS.append(err_message)
-#         raise KeyError(err_message)
-#     current_timestamp = int(time.time())
-#     while True:
-#         try:
-#             response = get_api_answer(current_timestamp)
-#             homework = check_response(response)
-#             if homework:
-#                 send_message(BOT, parse_status(homework[0]))
-#             current_timestamp = response.get('current_date',
-#             current_timestamp)
-#             time.sleep(RETRY_TIME)
-#
-#         except Exception as error:
-#             err_message = f'Сбой в работе программы: {error}'
-#             logger.error(err_message)
-#             if err_message not in LIST_ERRORS:
-#                 send_message(BOT, err_message)
-#                 LIST_ERRORS.append(err_message)
-#             time.sleep(RETRY_TIME)
 
 
 if __name__ == '__main__':
