@@ -89,7 +89,7 @@ def parse_status(homework):
     """Проверка статуса работ на сервере."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
-    if homework_name is None or homework_status is None:
+    if homework_status is None:
         err_message = 'Ответ сервера не соответствует ожиданиям'
         logger.error(err_message)
         if err_message not in LIST_ERRORS:
