@@ -126,7 +126,6 @@ def parse_status(homework):
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
-
 def check_tokens():
     """Проверка токенов на локальном сервере."""
     tokens = all([
