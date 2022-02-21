@@ -122,10 +122,6 @@ def check_tokens():
 
 def main():
     """Основная функция запуска."""
-    if check_tokens() != 1:
-        logger.error('Проверка токенов не прошла')
-        raise KeyError('Проверка токенов не прошла')
-
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     current_timestamp = int(time.time())
     while True:
