@@ -69,7 +69,7 @@ def check_response(response):
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
     try:
-        response['homeworks']
+        homeworks = response['homeworks']
     except Exception as error:
         err_message = f'Работ по ключу homeworks не найдено {error}'
         logger.error(err_message)
@@ -82,7 +82,7 @@ def check_response(response):
         raise TypeError('под ключом `homeworks`'
                         ' домашки приходят не в виде списка')
     if response['homeworks'] != []:
-        return response['homeworks']
+        return homeworks
 
 
 def parse_status(homework):
