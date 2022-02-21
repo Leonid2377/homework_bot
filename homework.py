@@ -119,7 +119,7 @@ def check_tokens():
 
 def main():
     """Основная функция запуска."""
-    if check_tokens() != 1:
+    if not check_tokens():
         err_message = 'Проверка токенов не прошла'
         logger.error(err_message)
         if err_message not in LIST_ERRORS:
