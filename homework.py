@@ -77,10 +77,10 @@ def check_response(response):
             send_message(BOT, err_message)
             LIST_ERRORS.append(err_message)
         raise KeyError(err_message)
-    if not isinstance(response['homeworks'], list):
-        logger.error('Неверный тип данных')
-        raise TypeError('под ключом `homeworks`'
-                        ' домашки приходят не в виде списка')
+    # if not isinstance(response['homeworks'], list):
+    #     logger.error('Неверный тип данных')
+    #     raise TypeError('под ключом `homeworks`'
+    #                     ' домашки приходят не в виде списка')
     if response['homeworks'] != []:
         return response['homeworks']
 
@@ -89,13 +89,13 @@ def parse_status(homework):
     """Проверка статуса работ на сервере."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
-    # if homework_status is None:
-    #     err_message = 'Ответ сервера не соответствует ожиданиям'
-    #     logger.error(err_message)
-    #     if err_message not in LIST_ERRORS:
-    #         send_message(BOT, err_message)
-    #         LIST_ERRORS.append(err_message)
-    #     raise ValueError(err_message)
+    if homework_name is None or homework_status is None:
+        err_message = 'Ответ сервера не соответствует ожиданиям'
+        logger.error(err_message)
+        if err_message not in LIST_ERRORS:
+            send_message(BOT, err_message)
+            LIST_ERRORS.append(err_message)
+        raise ValueError(err_message)
     if homework_status not in HOMEWORK_VERDICTES.keys():
         err_message = 'Неверное значение статуса работы'
         logger.error(err_message)
