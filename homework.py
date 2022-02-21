@@ -1,13 +1,13 @@
 import logging
 import os
-import telegram
 import time
-import requests
 from http import HTTPStatus
+
+import requests
+import telegram
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 PRACTICUM_TOKEN = os.getenv('YANDEX_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TOKEN')
@@ -19,7 +19,7 @@ LIST_ERRORS = []
 BOT = telegram.Bot(token=TELEGRAM_TOKEN)
 logger = logging.getLogger(__name__)
 
-HOMEWORK_STATUSES = {
+HOMEWORK_VERDICTES = {
     'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
     'reviewing': 'Работа взята на проверку ревьюером.',
     'rejected': 'Работа проверена: у ревьюера есть замечания.'
@@ -96,29 +96,25 @@ def parse_status(homework):
             send_message(BOT, err_message)
             LIST_ERRORS.append(err_message)
         raise ValueError(err_message)
-    if homework_status not in HOMEWORK_STATUSES.keys():
+    if homework_status not in HOMEWORK_VERDICTES.keys():
         err_message = 'Неверное значение статуса работы'
         logger.error(err_message)
         if err_message not in LIST_ERRORS:
             send_message(BOT, err_message)
             LIST_ERRORS.append(err_message)
         raise KeyError(err_message)
-    verdict = HOMEWORK_STATUSES[homework_status]
+    verdict = HOMEWORK_VERDICTES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
 def check_tokens():
     """Проверка токенов на локальном сервере."""
-    check = 1
-    tokens = [
+    tokens = all([
         PRACTICUM_TOKEN,
         TELEGRAM_TOKEN,
         TELEGRAM_CHAT_ID
-    ]
-    for i in tokens:
-        if i is None:
-            check = 0
-    return check
+    ])
+    return tokens
 
 
 def main():
