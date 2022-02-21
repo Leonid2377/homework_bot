@@ -134,7 +134,7 @@ def main():
             if homework:
                 send_message(BOT, parse_status(homework[0]))
             current_timestamp = response.get('current_date',
-            current_timestamp)
+                                             current_timestamp)
             time.sleep(RETRY_TIME)
 
         except Exception as error:
