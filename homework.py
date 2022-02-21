@@ -110,18 +110,33 @@ def parse_status(homework):
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
+# def check_tokens():
+#     """Проверка токенов на локальном сервере."""
+#     tokens = all([
+#         PRACTICUM_TOKEN,
+#         TELEGRAM_TOKEN,
+#         TELEGRAM_CHAT_ID
+#     ])
+#     return tokens
 def check_tokens():
-    """Проверка токенов на локальном сервере."""
-    tokens = all([
+    check = 1
+    tokens = [
         PRACTICUM_TOKEN,
         TELEGRAM_TOKEN,
         TELEGRAM_CHAT_ID
-    ])
-    return tokens
+    ]
+    for i in tokens:
+        if i is None:
+            check = 0
+    return check
 
 
 def main():
     """Основная функция запуска."""
+    if check_tokens() != 1:
+        logger.error('Проверка токенов не прошла')
+        raise KeyError('Проверка токенов не прошла')
+
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     current_timestamp = int(time.time())
     while True:
