@@ -71,12 +71,8 @@ def check_response(response):
     try:
         response['homeworks']
     except Exception as error:
-        err_message = f'Работ по ключу homeworks не найдено {error}'
-        logger.error(err_message)
-        if err_message not in LIST_ERRORS:
-            send_message(BOT, err_message)
-            LIST_ERRORS.append(err_message)
-        raise KeyError(err_message)
+        logger.error(f'Работ по ключу homeworks не найдено {error}')
+        raise KeyError('Работы не найдены')
     if not isinstance(response['homeworks'], list):
         logger.error('Неверный тип данных')
         raise TypeError('под ключом `homeworks`'
