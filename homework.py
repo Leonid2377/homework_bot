@@ -77,11 +77,11 @@ def check_response(response):
             send_message(BOT, err_message)
             LIST_ERRORS.append(err_message)
         raise KeyError(err_message)
-    if not isinstance(response['homeworks'], list):
+    if not isinstance(homeworks, list):
         logger.error('Неверный тип данных')
         raise TypeError('под ключом `homeworks`'
                         ' домашки приходят не в виде списка')
-    if response['homeworks'] != []:
+    if homeworks != []:
         return homeworks
 
 
