@@ -68,15 +68,18 @@ def check_response(response):
     if response is None:
         logger.error('Ответ сервера не соответствует ожиданиям')
         raise ValueError('Ошибка ответа сервера')
+    if type(response) != dict:
+        logger.error('Ответ сервера не список')
+        raise TypeError('Неверный тип данных')
+    if not isinstance(response['homeworks'], list):
+        logger.error('Неверный тип данных')
+        raise TypeError('под ключом `homeworks`'
+                        ' домашки приходят не в виде списка')
     try:
         response['homeworks']
     except Exception as error:
         logger.error(f'Работ по ключу homeworks не найдено {error}')
         raise KeyError('Работы не найдены')
-    if not isinstance(response['homeworks'], list):
-        logger.error('Неверный тип данных')
-        raise TypeError('под ключом `homeworks`'
-                        ' домашки приходят не в виде списка')
     if response['homeworks'] != []:
         return response['homeworks']
 
