@@ -32,8 +32,7 @@ logging.basicConfig(
 
 
 def send_error(error):
-    """Функция сохранения в логи и
-     отправке сообщения об ошибке."""
+    """Функция сохранения в логи и отправке сообщения об ошибке."""
     logging.error(error)
     if error not in LIST_ERRORS:
         BOT.send_message(chat_id=TELEGRAM_CHAT_ID, text=error)
