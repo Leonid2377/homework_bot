@@ -16,7 +16,7 @@ RETRY_TIME = 600
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 LIST_ERRORS = []
-BOT = telegram.Bot(token=TELEGRAM_TOKEN)
+# BOT = telegram.Bot(token=TELEGRAM_TOKEN)
 logger = logging.getLogger(__name__)
 
 HOMEWORK_VERDICTES = {
@@ -31,12 +31,13 @@ logging.basicConfig(
 )
 
 
-# def send_error(error):
-#     """Функция сохранения в логи и отправке сообщения об ошибке."""
-#     logging.error(error)
-#     if error not in LIST_ERRORS:
-#         BOT.send_message(chat_id=TELEGRAM_CHAT_ID, text=error)
-#         LIST_ERRORS.append(error)
+def send_error(error):
+    """Функция сохранения в логи и отправке сообщения об ошибке."""
+    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    logging.error(error)
+    if error not in LIST_ERRORS:
+        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=error)
+        LIST_ERRORS.append(error)
 
 
 def send_message(bot, message):
@@ -46,7 +47,7 @@ def send_message(bot, message):
     except Exception as error:
         err_message = f'Ошибка при отправке сообщения: {error}'
         logger.error(err_message)
-        # send_error(err_message)
+        send_error(err_message)
 
 
 def get_api_answer(current_timestamp):
@@ -60,7 +61,7 @@ def get_api_answer(current_timestamp):
             raise ConnectionError('Ошибка статуса ответа от API')
     except Exception as error:
         err_message = f'Ошибка при запросе к основному API: {error}'
-        # send_error(err_message)
+        send_error(err_message)
         raise ConnectionError(err_message)
     response = response.json()
     return response
@@ -94,7 +95,7 @@ def parse_status(homework):
         raise KeyError(err_message)
     if homework_status not in HOMEWORK_VERDICTES.keys():
         err_message = 'Неверное значение статуса работы'
-        # send_error(err_message)
+        send_error(err_message)
         raise KeyError(err_message)
     verdict = HOMEWORK_VERDICTES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
@@ -112,9 +113,10 @@ def check_tokens():
 
 def main():
     """Основная функция запуска."""
+    bot = telegram.Bot(token=TELEGRAM_TOKEN)
     if not check_tokens():
         err_message = 'Проверка токенов не прошла'
-        # send_error(err_message)
+        send_error(err_message)
         raise KeyError(err_message)
     current_timestamp = int(time.time())
     while True:
@@ -122,14 +124,14 @@ def main():
             response = get_api_answer(current_timestamp)
             homework = check_response(response)
             if homework:
-                send_message(BOT, parse_status(homework[0]))
+                send_message(bot, parse_status(homework[0]))
             current_timestamp = response.get('current_date',
                                              current_timestamp)
             time.sleep(RETRY_TIME)
 
         except Exception as error:
             err_message = f'Сбой в работе программы: {error}'
-            # send_error(err_message)
+            send_error(err_message)
             time.sleep(RETRY_TIME)
 
 
