@@ -81,7 +81,7 @@ def check_response(response):
         logger.error('Неверный тип данных')
         raise TypeError('под ключом `homeworks`'
                         ' домашки приходят не в виде списка')
-    if homeworks != []:
+    if not homeworks:
         return homeworks
 
 
