@@ -77,7 +77,7 @@ def check_response(response):
             send_message(BOT, err_message)
             LIST_ERRORS.append(err_message)
         raise KeyError(err_message)
-    if not isinstance(homeworks, dict):
+    if not isinstance(homeworks, list):
         logger.error('Неверный тип данных')
         raise TypeError('под ключом `homeworks`'
                         ' домашки приходят не в виде списка')
