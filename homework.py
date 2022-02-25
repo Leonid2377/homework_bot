@@ -16,7 +16,6 @@ RETRY_TIME = 600
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 LIST_ERRORS = []
-# BOT = telegram.Bot(token=TELEGRAM_TOKEN)
 logger = logging.getLogger(__name__)
 
 HOMEWORK_VERDICTES = {
@@ -35,6 +34,7 @@ def send_message(bot, message):
     """Функция отправки сообщения."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+        return 'successfully sent'
     except Exception as error:
         err_message = f'Ошибка при отправке сообщения: {error}'
         logger.error(err_message)
@@ -115,12 +115,14 @@ def main():
             current_timestamp = response.get('current_date',
                                              current_timestamp)
             time.sleep(RETRY_TIME)
-
         except Exception as error:
             logging.error(error)
             if err_message not in LIST_ERRORS:
                 send_message(bot, err_message)
-                LIST_ERRORS.append(err_message)
+                if send_message == 'successfully sent':
+                    LIST_ERRORS.append(err_message)
+                else:
+                    logger.error(err_message)
         time.sleep(RETRY_TIME)
 
 
