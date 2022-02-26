@@ -97,7 +97,7 @@ def check_tokens():
     ])
     return tokens
 
-
+# прошу прощения, торможу, спасибо за подсказку
 def main():
     """Основная функция запуска."""
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
