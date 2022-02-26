@@ -34,7 +34,7 @@ def send_message(bot, message):
     """Функция отправки сообщения."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
-        return 'successfully sent'
+        return True
     except Exception as error:
         err_message = f'Ошибка при отправке сообщения: {error}'
         logger.error(err_message)
@@ -118,8 +118,8 @@ def main():
         except Exception as error:
             logging.error(error)
             if err_message not in LIST_ERRORS:
-                send_message(bot, err_message)
-                if send_message == 'successfully sent':
+                message = send_message(bot, err_message)
+                if message:
                     LIST_ERRORS.append(err_message)
                 else:
                     logger.error(err_message)
