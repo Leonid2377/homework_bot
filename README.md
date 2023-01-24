@@ -38,9 +38,8 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Запустить приложение
+Создать и записать в токен (.env) свои учетные данные и запустить приложение
 ```
 python homework.py
 ```
 
-Создать и записать в токен (.env) свои учетные данные
